@@ -6,6 +6,9 @@ require_once __DIR__ . '/www/OpenWeatherMap-PHP-Api/Examples/bootstrap.php';
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
+// Todo: Pusha till git
+// Todo: Lägg till OpenWeatherMap som submodule?
+
 //Todo: DB-structure and setup routine
 $query = "DROP DATABASE IF EXISTS plantbot;";
 $query = "CREATE DATABASE plantbot;";
@@ -34,8 +37,6 @@ $plantData = array( 'name' => 'Plant 1',
                     'img_url' => '',
                   );
 
-print_r($plantData);
-
 $data = array();
 
 $owm = new OpenWeatherMap();
@@ -48,7 +49,7 @@ $data['name'] = $plantData['name'];
 $data['time'] = date('Y-m-d H:i');
 $data['temp'] = (int)getTemperature();
 $data['humidity'] = (int)getHumidity();
-$data['pressure'] = (int)getPressure();
+$data['pressure'] = (int)getPressure(); // Todo: Saknar sensor för detta va?
 $data['day_of_year'] = date('z')+1;
 $data['clouds'] = $clouds;
 $data['age_days'] = floor((time() - strtotime($plantData['birthday'])) / (60 * 60 * 24));
@@ -59,6 +60,7 @@ if ($plantData['location'] == 'Indoors') {
         // Todo: Vattna
         error_log("Vattnar ".$plantData['nickname']." med ".$plantData['feed_volume']." cl vatten.");
         $data['time_since_last_feeding_hours'] = 0;
+        $plantData['last_feed_time'] = date('Y-m-d H:i');
     } else {
         $data['time_since_last_feeding_hours'] = floor((time() - strtotime($plantData['last_feed_time'])) / (60 * 60));
     }
@@ -76,13 +78,15 @@ if ($plantData['location'] == 'Indoors') {
     */
 }
 
+print_r($plantData);
 print_r($data);
 //Todo: Spara data till db
 //Todo: Update plantdata
 //Todo: Pusha data till predictionmodellen
 //Todo: Ta en bild per dag
 //Todo: Statuspage/Dashboard eller mail?
-
+//Todo: Bevaka low-water-supply?
+//Todo: Flasha lampa i lägenheten?
 
 function getMoistLevel() {
     return shell_exec('python moistLevel.py');
