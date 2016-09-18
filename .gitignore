@@ -1,2 +1,5 @@
 ApiKey.ini
 plantbot.log
+composer.lock
+composer.phar
+vendor
