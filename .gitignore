@@ -3,3 +3,4 @@ plantbot.log
 composer.lock
 composer.phar
 vendor
+*.swp
