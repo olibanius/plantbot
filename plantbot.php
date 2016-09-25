@@ -16,16 +16,20 @@ $owm = new OpenWeatherMap();
 $owm->setApiKey($ini['ow_api_key']);
 $weather = $owm->getWeather($ini['ow_city'], $ini['ow_units'], $ini['ow_lang']);
 $clouds = $weather->clouds->getValue();
+$pressure = $weather->pressure->getValue();
 
 $plants = $db->getPlants();
+echo "-- PLANTS --\n";
+print_r($plants);
+
 foreach ($plants as $plantData) {
     $data = array();
     $data['plant_id'] = $plantData['id'];
     $data['soil'] = (int)getMoistLevel();
-    $data['time'] = date('Y-m-d H:i');
+    $data['time'] = date('Y-m-d H:i:s');
     $data['temp'] = (int)getTemperature();
     $data['humidity'] = (int)getHumidity();
-    $data['pressure'] = (int)getPressure(); // Todo: Saknar sensor för detta va?
+    $data['pressure'] = $pressure;
     $data['day_of_year'] = date('z')+1;
     $data['clouds'] = $clouds;
     $data['age_days'] = floor((time() - strtotime($plantData['birthday'])) / (60 * 60 * 24));
@@ -34,7 +38,6 @@ foreach ($plants as $plantData) {
         // More sensors and data?
         echo $temp = $weather->temperature->getValue();
         echo $humidity = $weather->humidity->getValue();
-        echo $pressure = $weather->pressure->getValue();
         echo $weather->wind->speed->getValue();
         echo $weather->wind->direction->getValue();
         echo $weather->wind->direction->getUnit();
@@ -60,8 +63,6 @@ foreach ($plants as $plantData) {
     //Todo: Spara data till db
     $db->saveData($data);
 }
-echo "-- PLANTS --\n";
-print_r($plants);
 
 //Todo: Update plantdata
 //Todo: Pusha data till predictionmodellen

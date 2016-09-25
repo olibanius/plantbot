@@ -43,6 +43,19 @@ class Db_model {
 
     function saveData($data) {
         print_r($data);
+        $query = "INSERT INTO plantdata set 
+            plant_id = {$data['plant_id']}, 
+            soil = {$data['soil']},
+            time = '{$data['time']}',
+            temp = {$data['temp']},
+            humidity = {$data['humidity']},
+            pressure = {$data['pressure']},
+            day_of_year = {$data['day_of_year']},
+            clouds = {$data['clouds']},
+            age_days = {$data['age_days']},
+            time_since_last_feeding_hours = {$data['time_since_last_feeding_hours']}
+            ";
+        $result = $this->queryDb($query);
     }
 
     function updateLastFeedTime($data) {
