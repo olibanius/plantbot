@@ -8,10 +8,10 @@ class Db_model {
     function db_connect($forceDB = false) {
         static $connection;
 
-        if ($forceDB) echo "FORCING SELECT DB! (Probably due to re-deployed db)\n";
+        //if ($forceDB) echo "FORCING SELECT DB! (Probably due to re-deployed db)\n";
 
         if (!isset($connection) || $forceDB) {
-            $ini = parse_ini_file('settings.ini');
+            $ini = parse_ini_file('settings.txt');
             $connection = mysqli_connect($ini['db_server'], $ini['db_user'], $ini['db_password']);
             if ($connection === false) {
                 die (mysqli_error());
@@ -57,7 +57,6 @@ class Db_model {
     }
 
     function createDatabase() {
-
         $query = "DROP DATABASE IF EXISTS plantbot;";
         $result = $this->queryDb($query);
 
@@ -101,12 +100,14 @@ class Db_model {
     }
 
     function setup() {
+        echo "Creating new plantbot db\n";
         $this->createDatabase();
         
         $feedIntervalAprox = 3; // Days?
         $soilTreshold = 83;
         $feedVolume = 300; // Centiliters? Per feeding time?
         $feedMode = 'soilTemp';
+        echo "Creating plant exampledata\n";
         $this->createPlant('Plant 1', 'Janne', 'Indoors', 'Fredskalla', $feedIntervalAprox, $soilTreshold, $feedVolume, $feedMode);
     }
 }

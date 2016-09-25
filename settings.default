@@ -1,0 +1,8 @@
+ow_api_key = api_key_for_open_weather
+ow_lang = se
+ow_units = metric
+ow_city = Mölndal
+db_server = 
+db_user = root
+db_password = 
+db_name = 'plantbot'

@@ -7,19 +7,14 @@ use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
 require 'vendor/autoload.php';
 
-$ini = parse_ini_file('settings.ini');
-$myApiKey = $ini['api_key'];
+$ini = parse_ini_file('settings.txt');
 
 include('db-model.php');
 $db = new Db_model;
-//$db->setup();
-
-$lang = 'se';
-$units = 'metric';
 
 $owm = new OpenWeatherMap();
-$owm->setApiKey($myApiKey);
-$weather = $owm->getWeather('Mölndal', $units, $lang);
+$owm->setApiKey($ini['ow_api_key']);
+$weather = $owm->getWeather($ini['ow_city'], $ini['ow_units'], $ini['ow_lang']);
 $clouds = $weather->clouds->getValue();
 
 $plants = $db->getPlants();
@@ -68,8 +63,6 @@ foreach ($plants as $plantData) {
 echo "-- PLANTS --\n";
 print_r($plants);
 
-//Todo: Kika på Larvel?
-//Todo: Fixa en setup.php
 //Todo: Update plantdata
 //Todo: Pusha data till predictionmodellen
 //Todo: Ta en bild per dag
