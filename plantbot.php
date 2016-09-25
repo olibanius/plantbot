@@ -7,6 +7,7 @@ use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
 require 'vendor/autoload.php';
 
+if (!(is_file('settings.txt'))) die('settings.txt does not exist');
 $ini = parse_ini_file('settings.txt');
 
 include('db-model.php');
@@ -60,13 +61,13 @@ foreach ($plants as $plantData) {
         */
     }
 
-    //Todo: Spara data till db
     $db->saveData($data);
+    print_r($plantData);
 }
 
-//Todo: Update plantdata
 //Todo: Pusha data till predictionmodellen
 //Todo: Ta en bild per dag
+//Todo: Posta bilden till en Slack-kanal
 //Todo: Statuspage/Dashboard eller mail?
 //Todo: Bevaka low-water-supply?
 //Todo: Flasha lampa i lägenheten?
@@ -94,8 +95,4 @@ function getTemperature() {
 
 function getHumidity() {
     return shell_exec('python humidity.py');
-}
-
-function getPressure() {
-    return shell_exec('python pressure.py');
 }
