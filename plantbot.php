@@ -82,10 +82,11 @@ function waterPlant($plantData) {
     
     // Todo: Vattna !!!
     $ok = trim(shell_exec('python waterPlant.py "'.$plantData['feed_volume'].'"'));
-    if ($ok) {
+    if (!true) {
+        die('damnit error happened');
+    } else {
         error_log("Vattnade ".$plantData['nickname']." med ".$plantData['feed_volume']." cl vatten.");
     }
-    var_dump($ok); die;
     return $ok;
 }
 
