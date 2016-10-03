@@ -9,6 +9,7 @@ require 'vendor/autoload.php';
 
 if (!(is_file('settings.txt'))) die('settings.txt does not exist');
 $ini = parse_ini_file('settings.txt');
+// Todo: Do settings init globally
 
 include('db-model.php');
 $db = new Db_model;
