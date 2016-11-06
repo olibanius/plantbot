@@ -33,3 +33,4 @@ pygame.display.update()
 
 #save picture
 pygame.image.save(windowSurfaceObj,filename)
+print filename

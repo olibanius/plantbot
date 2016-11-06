@@ -1,10 +1,10 @@
 <?php
+$imgUrl = $argv[1];
 $json = '{
     "attachments": [
         {
-            "image_url": "https://dl.dropboxusercontent.com/u/2839752/Wedding.gif",
-            "image_url": "https://dl.dropboxusercontent.com/u/2839752/2018-08-07%2008.32.34.jpg",
-            "text": "Here be test image"
+            "image_url": "'.$imgUrl.'",
+            "text": "Här är dagens bild!"
         }
     ]
 }';
