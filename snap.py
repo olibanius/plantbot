@@ -4,7 +4,7 @@ import pygame, sys
 import time
 
 timestr = time.strftime("%Y%m%d-%H%M%S")
-filename = "daily_images/plantbot-"+timestr+".jpg"
+filename = "/home/pi/plantbot/daily_images/plantbot-"+timestr+".jpg"
 
 from pygame.locals import *
 import pygame.camera

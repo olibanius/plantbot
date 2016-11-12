@@ -10,7 +10,11 @@ $json = '{
 }';
 $json = str_replace('"', '\"', $json);
 
-$uri = 'https://hooks.slack.com/services/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';
+$settingsFile = "/home/pi/plantbot/settings.txt";
+if (!(is_file($settingsFile))) die('settings.txt does not exist');
+$ini = parse_ini_file($settingsFile);
+
+$uri = $ini['slack_uri'];
 
 try {
   ob_start();
