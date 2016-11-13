@@ -36,13 +36,25 @@ class Db_model {
         $result = $this->queryDb($query);
         $plants = array();
         while ($row = mysqli_fetch_assoc($result)) {
-            $plants[] = $row;
+            $plants[$row['id']] = $row;
         }
         return $plants;
     }
 
+    function getPlantsData() {
+        $plants = $this->getPlants();
+        foreach ($plants as $plant) {
+            $query = "SELECT * from plantdata where plant_id=".$plant['id']." order by time desc limit 1";
+            $result = $this->queryDb($query);
+            while ($row = mysqli_fetch_assoc($result)) {
+                $plants[$plant['id']]['data'] = $row;
+            }
+        }
+        return $plants;
+
+    }
+
     function saveData($data) {
-        print_r($data);
         $query = "INSERT INTO plantdata set 
             plant_id = {$data['plant_id']}, 
             soil = {$data['soil']},
