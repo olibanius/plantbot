@@ -7,4 +7,4 @@ if ($argv[1] == 'yesterday') {
 $filename = trim(shell_exec("php /home/pi/plantbot/makeDailyGif.php $date"));
 shell_exec("php /home/pi/plantbot/dropboxUploadFile.php $filename");
 $link = shell_exec("php /home/pi/plantbot/dropboxShareLink.php $filename");
-shell_exec("php /home/pi/plantbot/postFileToSlack.php $link");
+shell_exec("php /home/pi/plantbot/postToSlack.php 'Här är dagens bild!' $link");

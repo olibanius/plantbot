@@ -1,10 +1,18 @@
 <?php
-$imgUrl = $argv[1];
+$text = $argv[1];
+if (isset($argv[2])) {
+    $imgUrl = $argv[2];
+}
+
 $json = '{
     "attachments": [
         {
-            "image_url": "'.$imgUrl.'",
-            "text": "Här är dagens bild!"
+            ';
+            if (isset($imgUrl)) {
+            $json .= '"image_url": "'.$imgUrl.'",';
+            }
+            $json .='
+            "text": "'.$text.'"
         }
     ]
 }';
