@@ -76,8 +76,8 @@ class Db_model {
 
     }
 
-    function createPlant($name, $nickname, $location, $kind, $feedIntervalAprox, $soilTreshold, $feedVolume, $feedMode) {
-        $query = "INSERT INTO plants set name='$name', nickname='$nickname', location='$location', kind='$kind', feed_interval_aprox=$feedIntervalAprox, soil_treshold=$soilTreshold, feed_volume=$feedVolume, feed_mode='$feedMode', birthday=NOW(), last_feed_time=NOW(), active=1;";
+    function createPlant($name, $nickname, $location, $kind, $feedIntervalAprox, $soilTreshold, $feedVolume, $feedMode, $moistSensorNr, $motorGPIO) {
+        $query = "INSERT INTO plants set name='$name', nickname='$nickname', location='$location', kind='$kind', feed_interval_aprox=$feedIntervalAprox, soil_treshold=$soilTreshold, feed_volume=$feedVolume, feed_mode='$feedMode', moist_sensor_nr = '$moistSensorNr', motor_GPIO = '$motorGPIO', birthday=NOW(), last_feed_time=NOW(), active=1;";
         $result = $this->queryDb($query);
     }
 
@@ -101,6 +101,8 @@ class Db_model {
                                             soil_treshold int,
                                             feed_volume int,
                                             feed_mode varchar(52),
+                                            moist_sensor_nr int,
+                                            motor_GPIO int,
                                             last_feed_time datetime,
                                             active bool,
                                             primary key (id)
