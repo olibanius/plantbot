@@ -20,13 +20,13 @@ $clouds = $weather->clouds->getValue();
 $pressure = $weather->pressure->getValue();
 
 $plants = $db->getPlants();
-echo "-- PLANTS --\n";
-print_r($plants);
+//echo "-- PLANTS --\n";
+//print_r($plants);
 
 foreach ($plants as $plantData) {
     $data = array();
     $data['plant_id'] = $plantData['id'];
-    $data['soil'] = (int)getMoistLevel();
+    $data['soil'] = (int)getMoistLevel($plantData['moist_sensor_nr']);
     $data['time'] = date('Y-m-d H:i:s');
     $data['temp'] = (int)getTemperature();
     $data['humidity'] = (int)getHumidity();
@@ -62,7 +62,7 @@ foreach ($plants as $plantData) {
     }
 
     $db->saveData($data);
-    print_r($plantData);
+    //print_r($plantData);
 }
 
 //Todo: Pusha data till predictionmodellen
@@ -76,7 +76,11 @@ function waterPlant($plantData) {
     // Todo: Ska matning bara tillåtas vissa tider?
     
     // Todo: Vattna !!!
-    $ok = trim(shell_exec('python waterPlant.py "'.$plantData['feed_volume'].'"'));
+
+    $feedTime = $plantData['feed_volume']/100;
+    $motorGPIO = $plantData['motor_GPIO'];
+
+    $ok = trim(shell_exec("python waterPlant.py $motorGpio $feedTime"));
     if (!true) {
         die('damnit error happened');
     } else {
@@ -85,8 +89,8 @@ function waterPlant($plantData) {
     return $ok;
 }
 
-function getMoistLevel() {
-    return shell_exec('python moistLevel.py');
+function getMoistLevel($sensorNr) {
+    return shell_exec("python moistLevel.py $sensorNr");
 }
 
 function getTemperature() {
