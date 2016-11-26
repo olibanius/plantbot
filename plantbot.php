@@ -58,7 +58,7 @@ foreach ($plants as $plantData) {
             $data['time_since_last_feeding_hours'] = 0;
             $plantData['last_feed_time'] = date('Y-m-d H:i');
             $db->updateLastFeedTime($plantData);
-            postTextToSlack($plant['nickname']. " matades med ".$plant['feed_volume']." cl vatten.");
+            postTextToSlack($plantData['nickname']. " matades med ".$plantData['feed_volume']." cl vatten.");
         } else {
             $data['time_since_last_feeding_hours'] = floor((time() - strtotime($plantData['last_feed_time'])) / (60 * 60));
         }
