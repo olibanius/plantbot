@@ -26,7 +26,7 @@ $uri = $ini['slack_uri'];
 
 try {
   ob_start();
-  $curl = 'curl -X POST --data "payload='.$json.'" '.$uri;
+  $curl = 'curl -s -X POST --data "payload='.$json.'" '.$uri;
   var_dump($curl);
   passthru($curl);
   $response = ob_get_contents();
