@@ -15,10 +15,15 @@ $db = new Db_model;
 
 $owm = new OpenWeatherMap();
 $owm->setApiKey($ini['ow_api_key']);
-$weather = $owm->getWeather($ini['ow_city'], $ini['ow_units'], $ini['ow_lang']);
-$clouds = $weather->clouds->getValue();
-$pressure = $weather->pressure->getValue();
-
+try {
+    $weather = $owm->getWeather($ini['ow_city'], $ini['ow_units'], $ini['ow_lang']);
+    $clouds = $weather->clouds->getValue();
+    $pressure = $weather->pressure->getValue();
+} catch (Exception $e) {
+    error_log("Error contacting to Weather API");
+    $clouds = 0;
+    $pressure = 0;
+}
 $plants = $db->getPlants();
 //echo "-- PLANTS --\n";
 //print_r($plants);
@@ -53,6 +58,7 @@ foreach ($plants as $plantData) {
             $data['time_since_last_feeding_hours'] = 0;
             $plantData['last_feed_time'] = date('Y-m-d H:i');
             $db->updateLastFeedTime($plantData);
+            postTextToSlack($plant['nickname']. " matades med ".$plant['feed_volume']." cl vatten.");
         } else {
             $data['time_since_last_feeding_hours'] = floor((time() - strtotime($plantData['last_feed_time'])) / (60 * 60));
         }
@@ -72,6 +78,10 @@ foreach ($plants as $plantData) {
 //Todo: Bevaka low-water-supply?
 //Todo: Flasha lampa i lägenheten?
 
+function postTextToSlack($text) {
+    shell_exec("php /home/pi/plantbot/postToSlack.php '$text'");
+}
+
 function waterPlant($plantData) {
     // Todo: Ska matning bara tillåtas vissa tider?
     
@@ -80,7 +90,7 @@ function waterPlant($plantData) {
     $feedTime = $plantData['feed_volume']/100;
     $motorGPIO = $plantData['motor_GPIO'];
 
-    $ok = trim(shell_exec("python waterPlant.py $motorGpio $feedTime"));
+    $ok = trim(shell_exec("python waterPlant.py $motorGPIO $feedTime"));
     if (!true) {
         die('damnit error happened');
     } else {
