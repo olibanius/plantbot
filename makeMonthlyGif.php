@@ -1,7 +1,7 @@
 <?php
 $fileNames = array();
-$year = date('Y');
-$month = date('m');
+$year = date('Y', strtotime('yesterday'));
+$month = date('m', strtotime('yesterday'));
 
 chdir(getcwd().'/daily_images/');
 foreach (glob("plantbot-$year*-$month*.jpg") as $filename) {
