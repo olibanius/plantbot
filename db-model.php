@@ -54,6 +54,16 @@ class Db_model {
 
     }
 
+    function getFeedingStats($startdate, $enddate) {
+        $plantdata = array();
+        $query = "select plant_id, soil, time, temp, age_days from plantdata where time >= '$startdate 00:00' and time <= '$enddate 23:59' and time_since_last_feeding_hours = 0 order by time asc";
+        $result = $this->queryDb($query);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $plantdata[$row['plant_id']][] = $row;
+        }
+        return $plantdata;
+    }
+
     function saveData($data) {
         $query = "INSERT INTO plantdata set 
             plant_id = {$data['plant_id']}, 
