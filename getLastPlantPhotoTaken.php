@@ -7,7 +7,7 @@ foreach (glob("plantbot-$today*.jpg") as $filename) {
     $files[] = $filename;
 }
 if (!empty($files)) {
-    echo end($files);
+    echo getcwd().'/'.end($files);
 } else {
     echo false;    
 }
