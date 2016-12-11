@@ -33,4 +33,4 @@ include('mailFile.php');
 $recipients = "fredrik.safsten@gmail.com, weiland_helena@hotmail.com, kristina.safsten@ovikenergi.se";
 //$recipients = "fredrik.safsten@gmail.com";
 $file = getcwd()."/daily_images/plantbot-2016-1103-112.jpg";
-mail_attachment($files[0], '', "$recipients", 'plantbot@safstens', 'Plantbot', 'noreply@safstens', "$text", "Hej! Så här fina är älsklingarna nu. Klicka på denna länk för att se en animation hur det gått denna månad: $link $output");
+mail_attachment($files[0], '', "$recipients", 'plantbot@safstens', 'Plantbot', 'noreply@safstens', "$text", "Hej! Så här fina är älsklingarna nu. Klicka på denna länk för att se en animation hur det gått denna månad: $link \n\n Dessa tider har matning skett på denna månad:\n\n$output");
