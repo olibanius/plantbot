@@ -5,10 +5,10 @@ ini_set("error_log", "plantbot.log");
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
-require 'vendor/autoload.php';
+require getcwd()."/vendor/autoload.php";
 
-if (!(is_file('settings.txt'))) die('settings.txt does not exist');
-$ini = parse_ini_file('settings.txt');
+if (!(is_file(getcwd().'/settings.txt'))) die('settings.txt does not exist');
+$ini = parse_ini_file(getcwd().'/settings.txt');
 
 include('db-model.php');
 $db = new Db_model;
@@ -39,7 +39,11 @@ foreach ($plants as $plantData) {
     $data['day_of_year'] = date('z')+1;
     $data['clouds'] = $clouds;
     $data['age_days'] = floor((time() - strtotime($plantData['birthday'])) / (60 * 60 * 24));
-    
+   
+    if ($data['plant_id'] == 1) {
+        hueEffect($data['soil']);
+    }
+
     if ($plantData['location'] == 'Outdoors') {
         // More sensors and data?
         echo $temp = $weather->temperature->getValue();
@@ -58,7 +62,7 @@ foreach ($plants as $plantData) {
             $data['time_since_last_feeding_hours'] = 0;
             $plantData['last_feed_time'] = date('Y-m-d H:i');
             $db->updateLastFeedTime($plantData);
-            postTextToSlack($plantData['nickname']. " matades med ".$plantData['feed_volume']." cl vatten.");
+            postTextToSlack($plantData['nickname']. " matades med ".$plantData['feed_volume']." cl vatten (Torrhet: ".$data['soil'].").");
         } else {
             $data['time_since_last_feeding_hours'] = floor((time() - strtotime($plantData['last_feed_time'])) / (60 * 60));
         }
@@ -78,6 +82,10 @@ foreach ($plants as $plantData) {
 //Todo: Bevaka low-water-supply?
 //Todo: Flasha lampa i lägenheten?
 
+function hueEffect($soil) {
+    shell_exec("php /home/pi/fun-with-hue/hueCycle.php $soil");
+}
+
 function postTextToSlack($text) {
     shell_exec("php /home/pi/plantbot/postToSlack.php '$text'");
 }
@@ -87,7 +95,7 @@ function waterPlant($plantData) {
     
     // Todo: Vattna !!!
 
-    $feedTime = $plantData['feed_volume']/100;
+    $feedTime = $plantData['feed_volume'];
     $motorGPIO = $plantData['motor_GPIO'];
 
     $ok = trim(shell_exec("python waterPlant.py $motorGPIO $feedTime"));
