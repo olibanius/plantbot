@@ -12,7 +12,7 @@ foreach ($data as $plant) {
     $text .= "Senast matad: ".substr($plant['last_feed_time'], 0, -3)."\n";
     $text .= "Fick uppmärksamhet: ".substr($plant['data']['time'], 0, -3)."\n";
     $text .= "Ålder: ".$plant['data']['age_days']." dagar\n";
-    $text .= "Jordens torrhet: ".$plant['data']['soil']." milliohm(?)\n";
+    $text .= "Jordens torrhet: ".$plant['data']['soil']." milliohm (Törstig på ".$plant['soil_treshold'].")\n";
     $text .= "Temperatur: ".$plant['data']['temp']." grader\n";
     $text .= "\n";
 }
