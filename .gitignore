@@ -5,3 +5,4 @@ composer.phar
 vendor
 *.swp
 daily_images
+test.php
