@@ -6,5 +6,5 @@ $filename = trim(shell_exec("php $workingDir/getLastPlantPhotoTaken.php"));
 if (!$filename) {
     die ('No recent photo found, sorry');
 }
-$db->getShareLink($filename);
+$link = $db->getShareLink($filename);
 shell_exec("php $workingDir/postToSlack.php 'Här kommer senast tagna bild!' $link");

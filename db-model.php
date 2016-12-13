@@ -67,7 +67,7 @@ class Db_model {
     function getShareLink($fileUri) {
         $query = "select share_link from shareLinks where file_uri='$fileUri'";
         $result = $this->queryDb($query);
-        if (count($result) > 0 ) {
+        if ($result->num_rows > 0 ) {
             $row = mysqli_fetch_assoc($result);
             return $row['share_link'];
         } else {
