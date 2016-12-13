@@ -64,6 +64,22 @@ class Db_model {
         return $plantdata;
     }
 
+    function getShareLink($fileUri) {
+        $query = "select share_link from shareLinks where file_uri='$fileUri'";
+        $result = $this->queryDb($query);
+        if (count($result) > 0 ) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['share_link'];
+        } else {
+            shell_exec("php $workingDir/dropboxUploadFile.php $fileUri");
+            $link = shell_exec("php $workingDir/dropboxShareLink.php $fileUri");
+            $query = "insert into shareLinks set file_uri='$fileUri', share_link='$link';";
+            $result = $this->queryDb($query);
+            return $link;
+        }
+
+    }
+
     function saveData($data) {
         $query = "INSERT INTO plantdata set 
             plant_id = {$data['plant_id']}, 
@@ -131,6 +147,14 @@ class Db_model {
                                                 clouds float,
                                                 age_days int,
                                                 time_since_last_feeding_hours int,
+                                                primary key(id)
+                                            );";
+        $result = $this->queryDb($query);
+        
+        $query = "CREATE TABLE shareLinks    (   
+                                                id int auto_increment,
+                                                file_uri varchar(255),
+                                                share_link varchar(255),
                                                 primary key(id)
                                             );";
         $result = $this->queryDb($query);
