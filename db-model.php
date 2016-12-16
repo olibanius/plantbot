@@ -65,6 +65,7 @@ class Db_model {
     }
 
     function getShareLink($fileUri) {
+        $workingDir = getcwd();
         $query = "select share_link from shareLinks where file_uri='$fileUri'";
         $result = $this->queryDb($query);
         if ($result->num_rows > 0 ) {
