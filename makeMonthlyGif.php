@@ -4,7 +4,7 @@ $year = date('Y', strtotime('yesterday'));
 $month = date('m', strtotime('yesterday'));
 
 chdir(getcwd().'/daily_images/');
-foreach (glob("plantbot-$year*-$month*.jpg") as $filename) {
+foreach (glob("plantbot-$year*$month-12*.jpg") as $filename) {
     $files[] = $filename;
 }
 $fileName = "monthgif-$year-$month-".date('H-s').".gif";
