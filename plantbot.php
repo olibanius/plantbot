@@ -13,6 +13,11 @@ $ini = parse_ini_file(getcwd().'/settings.txt');
 include('db-model.php');
 $db = new Db_model;
 
+$forcefeed = false;
+if (isset($argv[1]) && $argv[1] == 'forcefeed') {
+    $forcefeed = true;
+}
+
 $owm = new OpenWeatherMap();
 $owm->setApiKey($ini['ow_api_key']);
 try {
@@ -57,7 +62,7 @@ foreach ($plants as $plantData) {
     }
 
     if ($plantData['location'] == 'Indoors') {
-        if ($data['soil'] <= $plantData['soil_treshold']) {
+        if ($data['soil'] <= $plantData['soil_treshold'] || $forcefeed) {
             $watered = waterPlant($plantData);
             $data['time_since_last_feeding_hours'] = 0;
             $plantData['last_feed_time'] = date('Y-m-d H:i');
